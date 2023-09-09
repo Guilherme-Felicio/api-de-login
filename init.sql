@@ -1,0 +1,3 @@
+CREATE DATABASE chat;
+CREATE USER postgres WITH PASSWORD 'postgres';
+GRANT ALL PRIVILEGES ON DATABASE "chat" to postgres;
