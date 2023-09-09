@@ -1,7 +1,7 @@
-import User from "@/domain/entities/user";
+import User from "@/main/entities/user";
 
-export default class authRepository {
+export default class AuthRepository {
   constructor() {}
 
-  create(user: User) {}
+  async create(user: User) {}
 }

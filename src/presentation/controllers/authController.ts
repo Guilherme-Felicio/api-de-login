@@ -1,11 +1,10 @@
-import User, { IUser } from "@/domain/entities/user";
 import Validator from "@/infra/interfaces/adapters/validatorAdpter";
-import { ValidationError } from "@/utils/Errors/validation-error";
-import signupValidatorSchema from "@/utils/validations/signupValidationShema";
+import AuthRepository from "@/infra/interfaces/repositories/authRepository";
+import AuthUseCase from "@/domain/authUseCase/authUseCase";
 import { NextFunction, Request, Response } from "express";
 
 interface ISignUp extends Request {
-  id?: string | number;
+  id?: string;
   name?: string;
   email?: string;
   password?: string;
@@ -20,18 +19,17 @@ class AuthController {
   signUp(req: SignupRequest, res: Response, next: NextFunction) {
     const { id, name, email, password, confirmPassword } = req.body;
 
-    const result = new Validator().validate({
-      values: { id, name, email, password, confirmPassword },
-      validationSchema: signupValidatorSchema,
-    });
+    const validator = new Validator();
+    const authRepository = new AuthRepository();
+    const authUseCase = new AuthUseCase(validator, authRepository);
 
-    if (!result.isValid) {
-      return next(new ValidationError(result.detail));
+    try {
+      authUseCase.SignUp({ id, name, email, password, confirmPassword });
+      return res.status(200).json({ ok: true });
+    } catch (e) {
+      next(e);
+      return;
     }
-
-    const user = new User({ name, email, password } as IUser);
-
-    return res.status(200).json({ ok: true });
   }
 }
 
