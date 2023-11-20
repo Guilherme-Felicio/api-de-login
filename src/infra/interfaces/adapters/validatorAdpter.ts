@@ -1,13 +1,14 @@
-import { ZodEffects, ZodIssue } from "zod";
+import { ZodEffects, ZodIssue, z } from "zod";
 
 interface IValidatorReturn {
   isValid: boolean;
   detail?: ZodIssue[];
+  values: unknown;
 }
 
 interface IValidatorProps {
   values: unknown;
-  validationSchema: ZodEffects<any>;
+  validationSchema: ZodEffects<z.AnyZodObject>;
 }
 
 export default class Validator {
@@ -15,11 +16,12 @@ export default class Validator {
     const result = validationSchema.safeParse(values);
 
     if (result.success) {
-      return { isValid: true };
+      return { isValid: true, values };
     } else {
       return {
         isValid: false,
         detail: result.error.issues,
+        values,
       };
     }
   }

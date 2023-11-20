@@ -1,9 +1,12 @@
+import AuthUseCase, { ISignUp } from "@/domain/authUseCase/authUseCase";
+import Encrypter from "@/infra/interfaces/adapters/encryptAdapter";
 import Validator from "@/infra/interfaces/adapters/validatorAdpter";
 import AuthRepository from "@/infra/interfaces/repositories/authRepository";
-import AuthUseCase from "@/domain/authUseCase/authUseCase";
+import { ValidationError } from "@/utils/Errors/validation-error";
+import signupValidatorSchema from "@/utils/validations/signupValidationShema";
 import { NextFunction, Request, Response } from "express";
 
-interface ISignUp extends Request {
+interface SignupRequest extends Request {
   id?: string;
   name?: string;
   email?: string;
@@ -11,24 +14,30 @@ interface ISignUp extends Request {
   confirmPassword?: string;
 }
 
-interface SignupRequest {
-  body: ISignUp;
-}
-
 class AuthController {
-  signUp(req: SignupRequest, res: Response, next: NextFunction) {
-    const { id, name, email, password, confirmPassword } = req.body;
-
+  async signUp(req: SignupRequest, res: Response, next: NextFunction) {
     const validator = new Validator();
     const authRepository = new AuthRepository();
-    const authUseCase = new AuthUseCase(validator, authRepository);
+    const encrypter = new Encrypter();
+    const authUseCase = new AuthUseCase(authRepository, encrypter);
 
     try {
-      authUseCase.SignUp({ id, name, email, password, confirmPassword });
-      return res.status(200).json({ ok: true });
+      const result = validator.validate({
+        values: req.body,
+        validationSchema: signupValidatorSchema,
+      });
+
+      if (!result.isValid) {
+        throw new ValidationError(result);
+      }
+
+      const user = await authUseCase.SignUp(result.values as ISignUp);
+      return res.status(200).json({
+        created: true,
+        user: user,
+      });
     } catch (e) {
       next(e);
-      return;
     }
   }
 }
