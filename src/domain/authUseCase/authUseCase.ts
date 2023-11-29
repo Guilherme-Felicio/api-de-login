@@ -30,7 +30,7 @@ class AuthUseCase {
     }
 
     const hashedPassword = await this.encrypter.encrypt(
-      <string>values.password
+      <string>values.password,
     );
 
     const user = new User({

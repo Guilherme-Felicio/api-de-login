@@ -1,7 +1,7 @@
 {
   "*.ts": [
-    "yarn eslint 'src/**' --fix",
-    "yarn prettier --check 'src/**'",
+    "yarn eslint 'src/**/*.ts' --fix",
+    "yarn prettier --check 'src/**/*.ts'",
     "yarn test:staged"
   ]
 }
