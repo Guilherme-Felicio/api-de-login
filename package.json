@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "yarn install && yarn tsc && tsc-alias && yarn prisma generate",
-    "start": "node dist/app.js",
+    "build": "yarn install && yarn tsc && tsc-alias",
+    "start": "yarn prisma generate && node dist/app.js",
     "dev": "nodemon --watch \"src/\" --exec \"ts-node -r tsconfig-paths/register src/app.ts\" -e ts",
     "husky:prepare": "husky install",
     "test": "jest --passWithNoTests",
