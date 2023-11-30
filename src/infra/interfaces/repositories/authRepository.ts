@@ -8,6 +8,9 @@ export default class AuthRepository {
   async create(user: User) {
     const prisma = new PrismaClient();
 
+    console.log("oi");
+    
+
     try {
       const data = await prisma.user.create({
         data: {
@@ -27,6 +30,8 @@ export default class AuthRepository {
 
   async getUserByEmail(email: string) {
     const prisma = new PrismaClient();
+
+    console.log("oi2");
 
     try {
       const data = await prisma.user.findUnique({
