@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "yarn install && yarn tsc && tsc-alias",
+    "build": "yarn install && yarn prisma generate && yarn tsc && tsc-alias",
     "start": "node dist/app.js",
     "dev": "nodemon --watch \"src/\" --exec \"ts-node -r tsconfig-paths/register src/app.ts\" -e ts",
     "husky:prepare": "husky install",
