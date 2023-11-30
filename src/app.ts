@@ -36,5 +36,5 @@ app.use(
 );
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT} ${process.env.DATABASE_URL}`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
