@@ -1,12 +1,12 @@
+import prisma from "@/infra/dbClient/client";
 import User from "@/main/entities/user";
 import { InternalServerError } from "@/utils/Errors/internal-server-error";
-import { PrismaClient } from "@prisma/client";
 
 export default class AuthRepository {
   constructor() {}
 
   async create(user: User) {
-    const prisma = new PrismaClient();
+    
 
     console.log("oi");
     
@@ -29,11 +29,8 @@ export default class AuthRepository {
   }
 
   async getUserByEmail(email: string) {
-    const prisma = new PrismaClient();
-
-    console.log("oi2");
-
     try {
+
       const data = await prisma.user.findUnique({
         where: { email: email },
       });
