@@ -16,5 +16,5 @@ model User {
   name      String
   password  String
   isEmailVerified Boolean
-  token String
+  token String @unique
 }

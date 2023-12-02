@@ -4,10 +4,10 @@ import User from "@/main/entities/user";
 import { ConflictError } from "@/utils/Errors/conflict-error";
 import { InternalServerError } from "@/utils/Errors/internal-server-error";
 import { randomUUID } from "crypto";
-import UserEmailUseCase from "../sendCreateUserEmailUseCase/userEmail";
+import UserEmailUseCase from "../emailUseCase/emailUseCase";
 
 export interface ISignUp {
-  id?: string;
+  id?: number;
   name: string;
   email: string;
   password: string;
@@ -54,6 +54,11 @@ class AuthUseCase {
       id: res.id,
       email: res.email,
     };
+  }
+
+  async validateUser(token: string) {
+    const data = await this.authRepository.updateVerifyEmail(token);
+    return data;
   }
 }
 

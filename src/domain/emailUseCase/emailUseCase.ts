@@ -1,7 +1,7 @@
 import EmailAdapter from "@/infra/interfaces/adapters/emailAdapter";
 import User from "@/main/entities/user";
 
-export default class UserEmailUseCase {
+export default class EmailUseCase {
   constructor() {}
 
   static async sendAuthLinkEmail(user: User) {

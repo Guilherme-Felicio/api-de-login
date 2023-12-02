@@ -6,11 +6,6 @@ export default class AuthRepository {
   constructor() {}
 
   async create(user: User) {
-    
-
-    console.log("oi");
-    
-
     try {
       const data = await prisma.user.create({
         data: {
@@ -21,7 +16,6 @@ export default class AuthRepository {
           token: user.token,
         },
       });
-
       return data;
     } catch (e) {
       throw new InternalServerError(e);
@@ -30,9 +24,23 @@ export default class AuthRepository {
 
   async getUserByEmail(email: string) {
     try {
-
       const data = await prisma.user.findUnique({
         where: { email: email },
+      });
+
+      return data;
+    } catch (e) {
+      throw new InternalServerError(e);
+    }
+  }
+
+  async updateVerifyEmail(token: string) {
+    try {
+      const data = await prisma.user.update({
+        where: { token: token },
+        data: {
+          isEmailVerified: true,
+        },
       });
 
       return data;

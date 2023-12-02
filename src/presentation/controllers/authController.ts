@@ -6,7 +6,7 @@ import { ValidationError } from "@/utils/Errors/validation-error";
 import signupValidatorSchema from "@/utils/validations/signupValidationShema";
 import { NextFunction, Request, Response } from "express";
 
-interface SignupRequest extends Request {
+interface SignupRequest {
   id?: string;
   name?: string;
   email?: string;
@@ -14,8 +14,16 @@ interface SignupRequest extends Request {
   confirmPassword?: string;
 }
 
+interface ValidateUserRequest extends Request {
+  token: string;
+}
+
 class AuthController {
-  async signUp(req: SignupRequest, res: Response, next: NextFunction) {
+  async signUp(
+    req: Request<unknown, unknown, SignupRequest>,
+    res: Response,
+    next: NextFunction,
+  ) {
     const validator = new Validator();
     const authRepository = new AuthRepository();
     const encrypter = new Encrypter();
@@ -36,6 +44,23 @@ class AuthController {
         created: true,
         user: user,
       });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async validateUser(
+    req: Request<unknown, unknown, unknown, ValidateUserRequest>,
+    res: Response,
+    next: NextFunction,
+  ) {
+    const authRepository = new AuthRepository();
+    const encrypter = new Encrypter();
+    const authUseCase = new AuthUseCase(authRepository, encrypter);
+
+    try {
+      await authUseCase.validateUser(req.query.token);
+      return res.status(200).json({ message: "User Validated" });
     } catch (e) {
       next(e);
     }
