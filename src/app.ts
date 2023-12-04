@@ -16,7 +16,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use("/signup", authRoutes.router);
+app.use("/user", authRoutes.router);
 app.use("/", (req: Request, res: Response) => {
   return res.status(404).json({
     message: "invalid route",

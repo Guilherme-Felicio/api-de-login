@@ -59,7 +59,8 @@ class AuthController {
     const authUseCase = new AuthUseCase(authRepository, encrypter);
 
     try {
-      await authUseCase.validateUser(req.query.token);
+      const data = await authUseCase.validateUser(req.query.token);
+      if (!data) return res.status(404).json({ message: "User not Found" });
       return res.status(200).json({ message: "User Validated" });
     } catch (e) {
       next(e);

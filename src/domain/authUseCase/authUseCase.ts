@@ -57,6 +57,8 @@ class AuthUseCase {
   }
 
   async validateUser(token: string) {
+    const user = await this.authRepository.getUserByToken(token);
+    if (!user) return null;
     const data = await this.authRepository.updateVerifyEmail(token);
     return data;
   }

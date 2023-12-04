@@ -34,6 +34,18 @@ export default class AuthRepository {
     }
   }
 
+  async getUserByToken(token: string) {
+    try {
+      const data = await prisma.user.findFirst({
+        where: { token },
+      });
+
+      return data;
+    } catch (e) {
+      throw new InternalServerError(e);
+    }
+  }
+
   async updateVerifyEmail(token: string) {
     try {
       const data = await prisma.user.update({
