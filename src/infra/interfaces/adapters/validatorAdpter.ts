@@ -1,4 +1,4 @@
-import { ZodEffects, ZodIssue, z } from "zod";
+import { ZodIssue, z } from "zod";
 
 interface IValidatorReturn {
   isValid: boolean;
@@ -8,7 +8,7 @@ interface IValidatorReturn {
 
 interface IValidatorProps {
   values: unknown;
-  validationSchema: ZodEffects<z.AnyZodObject>;
+  validationSchema: z.ZodTypeAny;
 }
 
 export default class Validator {
