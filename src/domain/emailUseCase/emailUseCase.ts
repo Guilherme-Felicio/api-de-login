@@ -14,7 +14,7 @@ export default class EmailUseCase {
         Click on the link below to create your password and validate your account: 
     </p>
 
-    <a href="google.com">
+    <a href="${process.env.FRONT_LINK + "/activate-account/" + user.token}">
         Validate account
     </a>
 
