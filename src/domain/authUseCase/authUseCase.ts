@@ -66,7 +66,7 @@ class AuthUseCase {
   async login(email: string, password: string) {
     const user = await this.authRepository.getUserByEmail(email);
     if (!user) return null;
-    const result = this.encrypter.compare(password, user.password);
+    const result = await this.encrypter.compare(password, user.password);
     if (!result) return null;
     return user;
   }
