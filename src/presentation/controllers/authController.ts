@@ -1,4 +1,5 @@
 import AuthUseCase, { ISignUp } from "@/domain/authUseCase/authUseCase";
+import EmailUseCase from "@/domain/emailUseCase/emailUseCase";
 import Encrypter from "@/infra/interfaces/adapters/encryptAdapter";
 import Validator from "@/infra/interfaces/adapters/validatorAdpter";
 import AuthRepository from "@/infra/interfaces/repositories/authRepository";
@@ -34,7 +35,12 @@ class AuthController {
     const validator = new Validator();
     const authRepository = new AuthRepository();
     const encrypter = new Encrypter();
-    const authUseCase = new AuthUseCase(authRepository, encrypter);
+    const userEmailUseCase = new EmailUseCase();
+    const authUseCase = new AuthUseCase(
+      authRepository,
+      encrypter,
+      userEmailUseCase,
+    );
 
     try {
       const result = validator.validate({
@@ -63,7 +69,12 @@ class AuthController {
   ) {
     const authRepository = new AuthRepository();
     const encrypter = new Encrypter();
-    const authUseCase = new AuthUseCase(authRepository, encrypter);
+    const userEmailUseCase = new EmailUseCase();
+    const authUseCase = new AuthUseCase(
+      authRepository,
+      encrypter,
+      userEmailUseCase,
+    );
 
     try {
       const data = await authUseCase.validateUser(req.query.token);
@@ -81,7 +92,12 @@ class AuthController {
   ) {
     const authRepository = new AuthRepository();
     const encrypter = new Encrypter();
-    const authUseCase = new AuthUseCase(authRepository, encrypter);
+    const userEmailUseCase = new EmailUseCase();
+    const authUseCase = new AuthUseCase(
+      authRepository,
+      encrypter,
+      userEmailUseCase,
+    );
     const validator = new Validator();
 
     try {

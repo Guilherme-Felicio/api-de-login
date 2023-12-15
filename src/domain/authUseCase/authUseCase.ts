@@ -4,7 +4,7 @@ import User from "@/main/entities/user";
 import { ConflictError } from "@/utils/Errors/conflict-error";
 import { InternalServerError } from "@/utils/Errors/internal-server-error";
 import { randomUUID } from "crypto";
-import UserEmailUseCase from "../emailUseCase/emailUseCase";
+import EmailUseCase from "../emailUseCase/emailUseCase";
 
 export interface ISignUp {
   id?: number;
@@ -17,9 +17,15 @@ export interface ISignUp {
 class AuthUseCase {
   private encrypter: Encrypter;
   private authRepository: AuthRepository;
-  constructor(authRepository: AuthRepository, encrypter: Encrypter) {
+  private userEmailUseCase: EmailUseCase;
+  constructor(
+    authRepository: AuthRepository,
+    encrypter: Encrypter,
+    userEmailUseCase: EmailUseCase,
+  ) {
     this.authRepository = authRepository;
     this.encrypter = encrypter;
+    this.userEmailUseCase = userEmailUseCase;
   }
 
   async SignUp(values: ISignUp) {
@@ -44,7 +50,7 @@ class AuthUseCase {
 
     const res = await this.authRepository.create(user);
 
-    const emailResult = await UserEmailUseCase.sendAuthLinkEmail(user);
+    const emailResult = await this.userEmailUseCase.sendAuthLinkEmail(user);
     if (!emailResult.wasSend) {
       throw new InternalServerError("It was not possible send the email");
     }

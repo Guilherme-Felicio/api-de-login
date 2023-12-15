@@ -5,7 +5,7 @@ import { InternalServerError } from "@/utils/Errors/internal-server-error";
 export default class AuthRepository {
   constructor() {}
 
-  async create(user: User) {
+  async create(user: User): Promise<User> {
     try {
       const data = await prisma.user.create({
         data: {
@@ -24,7 +24,7 @@ export default class AuthRepository {
 
   async getUserByEmail(email: string) {
     try {
-      const data = await prisma.user.findUnique({
+      const data: User | null = await prisma.user.findUnique({
         where: { email: email },
       });
 

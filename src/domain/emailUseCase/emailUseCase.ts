@@ -4,7 +4,7 @@ import User from "@/main/entities/user";
 export default class EmailUseCase {
   constructor() {}
 
-  static async sendAuthLinkEmail(user: User) {
+  async sendAuthLinkEmail(user: User) {
     const body = `<p>Hello ${user.name}</p>,
 
     <p>
